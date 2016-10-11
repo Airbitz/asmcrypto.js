@@ -29,6 +29,14 @@ else {
     _hires_now = function () { return 1000 * _global_date_now() - _hires_epoch | 0 };
 }
 
+var _location = {};
+if (typeof global.location === 'undefined') {
+    _location.href = 'no extra random'
+} else {
+    _location = global.location
+}
+
+
 /**
  * weak_seed
  *
@@ -62,7 +70,7 @@ function Random_weak_seed () {
 
         var pbkdf2 = get_pbkdf2_hmac_sha256_instance();
         for ( i = 0; i < 100; i++ ) {
-            buffer = pbkdf2.reset( { password: buffer } ).generate( global.location.href, 1000, 32 ).result;
+            buffer = pbkdf2.reset( { password: buffer } ).generate( _location.href, 1000, 32 ).result;
             t = _hires_now();
             buffer[0] ^= t >>> 24, buffer[1] ^= t >>> 16, buffer[2] ^= t >>> 8, buffer[3] ^= t;
         }
